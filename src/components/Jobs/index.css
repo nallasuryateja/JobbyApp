@@ -1,0 +1,22 @@
+.left-container {
+  width: 30%;
+  background-color: light gray;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+.right-container {
+  background-color: black;
+  width: 70%;
+}
+.jobs-container {
+  background-color: gray;
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+}
+.typeofE {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+}

@@ -1,0 +1,27 @@
+.job-item {
+  background-color: grey;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+}
+.first-container {
+  display: flex;
+  flex-direction: row;
+}
+.f-sub {
+  display: flex;
+  flex-direction: column;
+}
+.second-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.s-sub {
+  display: flex;
+  flex-direction: row;
+}
+.third-container {
+  display: flex;
+  flex-direction: column;
+}
