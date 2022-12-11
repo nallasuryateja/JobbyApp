@@ -1,4 +1,5 @@
 import {Component} from 'react'
+import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
 import JobItemDetailsCard from '../JobItemDetailsCard'
 import './index.css'
@@ -6,7 +7,7 @@ import './index.css'
 class JobItemDetails extends Component {
   state = {
     dataaa: {},
-    isDataFetched: false,
+    isLoading: false,
   }
 
   componentDidMount() {
@@ -14,6 +15,10 @@ class JobItemDetails extends Component {
   }
 
   getProductsData = async () => {
+    this.setState({
+      isLoading: true,
+    })
+    console.log('Loading')
     const {match} = this.props
     const {params} = match
     const {id} = params
@@ -30,7 +35,6 @@ class JobItemDetails extends Component {
     if (response.ok === true) {
       const fetchedData = await response.json()
 
-      console.log(fetchedData)
       const updatedSkills = fetchedData.job_details.skills.map(each => ({
         imageUrl: each.image_url,
         name: each.name,
@@ -65,20 +69,19 @@ class JobItemDetails extends Component {
         jobDetails: updatedJobDetails,
         similarJobs: updatedSimilarJobs,
       }
-      this.setState({dataaa: updatedData})
+
+      this.setState({dataaa: updatedData, isLoading: false})
+      console.log('loading over and updatedData set to state successfully')
     }
   }
 
   renderJobDetails = () => {
     const {dataaa} = this.state
     console.log(dataaa)
+    console.log('reached to renderjobDetails')
     const {jobDetails} = dataaa
 
-    return (
-      <div>
-        <JobItemDetailsCard exportData={jobDetails} />
-      </div>
-    )
+    return <JobItemDetailsCard exportData={jobDetails} />
   }
 
   renderFailure = () => (
@@ -93,12 +96,20 @@ class JobItemDetails extends Component {
     </div>
   )
 
+  renderLoader = () => (
+    <div className="products-loader-container">
+      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+    </div>
+  )
+
   render() {
-    const {isDataFetched} = this.state
+    const {isLoading} = this.state
+    console.log(isLoading)
 
     return (
       <div className="main-bg-container">
-        {isDataFetched ? this.renderFailure() : this.renderJobDetails()}
+        {isLoading && this.renderLoader}
+        {!isLoading && this.renderJobDetails}
       </div>
     )
   }
