@@ -2,12 +2,13 @@ import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
 import JobItemDetailsCard from '../JobItemDetailsCard'
+import Header from '../Header'
 import './index.css'
 
 class JobItemDetails extends Component {
   state = {
     dataaa: {},
-    isLoading: false,
+    isLoading: true,
   }
 
   componentDidMount() {
@@ -72,6 +73,8 @@ class JobItemDetails extends Component {
 
       this.setState({dataaa: updatedData, isLoading: false})
       console.log('loading over and updatedData set to state successfully')
+    } else {
+      this.renderFailure()
     }
   }
 
@@ -81,7 +84,12 @@ class JobItemDetails extends Component {
     console.log('reached to renderjobDetails')
     const {jobDetails} = dataaa
 
-    return <JobItemDetailsCard exportData={jobDetails} />
+    return (
+      <div>
+        <Header />
+        <JobItemDetailsCard jobDetails={jobDetails} />
+      </div>
+    )
   }
 
   renderFailure = () => (
@@ -108,8 +116,8 @@ class JobItemDetails extends Component {
 
     return (
       <div className="main-bg-container">
-        {isLoading && this.renderLoader}
-        {!isLoading && this.renderJobDetails}
+        {isLoading && this.renderLoader()}
+        {!isLoading && this.renderJobDetails()}
       </div>
     )
   }

@@ -2,13 +2,22 @@ import './index.css'
 import SkillCard from '../SkillCard'
 
 const JobItemDetailsCard = props => {
-  const {exportData} = props
+  const {jobDetails} = props
   console.log(props)
-  const {jobDetails} = exportData
-  const {companyLogoUrl, employmentType, jobDescription, skills} = jobDetails
+
+  const {
+    skills,
+    lifeAtCompany,
+    companyLogoUrl,
+    employmentType,
+    jobDescription,
+  } = jobDetails
+
+  console.log(employmentType)
+  const {description, imageUrl} = lifeAtCompany
   return (
     <div className="bg-container">
-      <div>
+      <div className="parts">
         <div className="first-part">
           <div className="first-sub-part-one">
             <img src={companyLogoUrl} alt="logo" />
@@ -25,17 +34,17 @@ const JobItemDetailsCard = props => {
             </div>
           </div>
         </div>
-        <hr />
+
         <div className="second-part">
           <div className="second-sub-part">
-            <h1>{jobDescription}</h1>
+            <h1>Description</h1>
             <p>anchor link</p>
           </div>
-          <p>Are you intrested in building products</p>
+          <p>{jobDescription}</p>
         </div>
         <div className="third-part">
           <h1>Skills</h1>
-          <ul>
+          <ul className="uno-list">
             {skills.map(each => (
               <SkillCard eachDetails={each} key={each.name} />
             ))}
@@ -44,10 +53,10 @@ const JobItemDetailsCard = props => {
         <div className="fourth-part">
           <div className="fourth-one">
             <h1>Life at Company</h1>
-            <p>From building the future</p>
+            <p>{description}</p>
           </div>
           <div>
-            <img src="" alt="lifeimage" />
+            <img src={imageUrl} alt="lifeimage" />
           </div>
         </div>
       </div>
