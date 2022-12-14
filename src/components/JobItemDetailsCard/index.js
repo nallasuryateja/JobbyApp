@@ -60,9 +60,6 @@ const JobItemDetailsCard = props => {
           </div>
         </div>
       </div>
-      <div className="fifth-part">
-        <h1>Similar Jobs</h1>
-      </div>
     </div>
   )
 }

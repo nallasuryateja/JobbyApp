@@ -2,6 +2,7 @@ import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
 import JobItemDetailsCard from '../JobItemDetailsCard'
+import SimilarJobsCard from '../SimilarJobsCard'
 import Header from '../Header'
 import './index.css'
 
@@ -82,12 +83,18 @@ class JobItemDetails extends Component {
     const {dataaa} = this.state
     console.log(dataaa)
     console.log('reached to renderjobDetails')
-    const {jobDetails} = dataaa
+    const {jobDetails, similarJobs} = dataaa
 
     return (
       <div>
         <Header />
         <JobItemDetailsCard jobDetails={jobDetails} />
+        <h1>Similar Jobs</h1>
+        <ul className="un-list">
+          {similarJobs.map(each => (
+            <SimilarJobsCard key={each.id} eachDetails={each} />
+          ))}
+        </ul>
       </div>
     )
   }
