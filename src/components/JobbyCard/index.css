@@ -3,5 +3,9 @@
   height: 250px;
   border-radius: 10px;
   padding: 20px;
-  color: black;
+  color: white;
+}
+
+.profile-image {
+  width: 60px;
 }

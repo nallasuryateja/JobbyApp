@@ -5,7 +5,7 @@ const TypeOfEmployment = props => {
   const {label, employmentTypeId} = eachDetails
 
   const onClickCheck = () => {
-    onCheckBox(label)
+    onCheckBox(employmentTypeId)
     console.log('clicked checkbox')
   }
   return (

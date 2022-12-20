@@ -4,17 +4,16 @@ import Cookies from 'js-cookie'
 
 import JobCard from '../JobCard'
 import './index.css'
+import NoJobsFound from '../NoJobsFound'
 
 class AllJobsSection extends Component {
   constructor(props) {
     super(props)
-    const {checkedItem} = this.props
+
     this.state = {
-      jobsList: [],
-      isLoading: false,
       inputValue: '',
-      isChecked: false,
-      checkedItem,
+      jobsList: [],
+      apiStatus: 'INITIAL',
     }
   }
 
@@ -35,11 +34,13 @@ class AllJobsSection extends Component {
   }
 
   getProducts = async () => {
+    const {activeRange, activeType} = this.props
+    console.log(activeRange)
     this.setState({
-      isLoading: true,
+      apiStatus: 'LOADING',
     })
     const jwtToken = Cookies.get('jwt_token')
-    const apiUrl = 'https://apis.ccbp.in/jobs'
+    const apiUrl = `https://apis.ccbp.in/jobs?employement_type=${activeRange}&minimum_package=${activeType}&search=`
     const options = {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
@@ -61,35 +62,28 @@ class AllJobsSection extends Component {
       }))
       this.setState({
         jobsList: updatedData,
-        isLoading: false,
+        apiStatus: 'SUCCESS',
       })
+    } else if (response.status === 401) {
+      this.setState({apiStatus: 'FAILURE'})
     }
   }
 
-  checkedList = () => {
-    const {checkedItem, jobsList} = this.state
-    console.log(checkedItem)
-    console.log(jobsList)
-    const lengthh = checkedItem.length
-    console.log(lengthh)
-    if (lengthh > 1) {
-      this.setState({isChecked: true})
-    }
-    const v = jobsList.map(each => each.employmentType === checkedItem)
-    console.log(v)
-    this.setState({jobsList: v})
-  }
-
-  renderProductsList = () => {
-    const {jobsList, isChecked} = this.state
+  renderSuccessView = () => {
+    const {jobsList} = this.state
+    const lengthh = jobsList.length
     return (
       <>
-        <h1 className="products-list-heading">All Products</h1>
-        <ul className="products-list">
-          {isChecked &&
+        <div>
+          <input type="search" onChange={this.onChangeInput} />
+          <button type="button" onClick={this.filterJobList}>
+            search
+          </button>
+        </div>
+        <ul className="jobs-list">
+          {lengthh > 1 &&
             jobsList.map(job => <JobCard jobData={job} key={job.id} />)}
-          {!isChecked &&
-            jobsList.map(job => <JobCard jobData={job} key={job.id} />)}
+          {lengthh < 1 && <NoJobsFound />}
         </ul>
       </>
     )
@@ -101,20 +95,32 @@ class AllJobsSection extends Component {
     </div>
   )
 
-  render() {
-    const {isLoading} = this.state
-    return (
-      <>
-        <div>
-          <input type="search" onChange={this.onChangeInput} />
-          <button type="button" onClick={this.filterJobList}>
-            search
-          </button>
-        </div>
+  renderFailureView = () => (
+    <div className="failure">
+      <div>
+        <img
+          src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
+          alt="failure view"
+        />
+        <h1>Oops! Something Went Wrong</h1>
+        <p>we cannot seem to find the page you are looking for.</p>
+        <button type="button">Retry</button>
+      </div>
+    </div>
+  )
 
-        {isLoading ? this.renderLoader() : this.renderProductsList()}
-      </>
-    )
+  render() {
+    const {apiStatus} = this.state
+    switch (apiStatus) {
+      case 'LOADING':
+        return this.renderLoader()
+      case 'SUCCESS':
+        return this.renderSuccessView()
+      case 'FAILURE':
+        return this.renderFailureView()
+      default:
+        return null
+    }
   }
 }
 

@@ -20,7 +20,7 @@ const JobItemDetailsCard = props => {
       <div className="parts">
         <div className="first-part">
           <div className="first-sub-part-one">
-            <img src={companyLogoUrl} alt="logo" />
+            <img src={companyLogoUrl} alt="profile" />
             <div className="rating-container">
               <p>{employmentType}</p>
               <p>4</p>

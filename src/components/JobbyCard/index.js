@@ -1,10 +1,12 @@
 import Cookies from 'js-cookie'
+import Loader from 'react-loader-spinner'
 import {Component} from 'react'
 import './index.css'
 
 class JobbyCard extends Component {
   state = {
     data: {},
+    apiStatus: 'INITIAL',
   }
 
   componentDidMount() {
@@ -12,6 +14,7 @@ class JobbyCard extends Component {
   }
 
   getProducts = async () => {
+    this.setState({apiStatus: 'LOADING'})
     const jwtToken = Cookies.get('jwt_token')
     const apiUrl = 'https://apis.ccbp.in/profile'
     const options = {
@@ -32,20 +35,49 @@ class JobbyCard extends Component {
       }
       this.setState({
         data: updatedData,
+        apiStatus: 'SUCCESS',
       })
     }
   }
 
-  render() {
+  renderSuccessView = () => {
     const {data} = this.state
     const {shortBio, profileImageUrl, name} = data
     return (
-      <div className="bg-container">
-        <img src={profileImageUrl} alt={name} />
-        <h1>{name}</h1>
-        <p>{shortBio}</p>
+      <div>
+        <div className="bg-container">
+          <img className="profile-image" src={profileImageUrl} alt={name} />
+          <h1>{name}</h1>
+          <p>{shortBio}</p>
+        </div>
       </div>
     )
+  }
+
+  renderLoadingView = () => (
+    <div className="products-loader-container">
+      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+    </div>
+  )
+
+  renderFailureView = () => (
+    <div>
+      <button type="button">Retry</button>
+    </div>
+  )
+
+  render() {
+    const {apiStatus} = this.state
+    switch (apiStatus) {
+      case 'LOADING':
+        return this.renderLoadingView()
+      case 'SUCCESS':
+        return this.renderSuccessView()
+      case 'FAILURE':
+        return this.renderFailureView()
+      default:
+        return null
+    }
   }
 }
 export default JobbyCard

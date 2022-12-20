@@ -1,11 +1,12 @@
 import {Component} from 'react'
-import Cookies from 'js-cookie'
+/* import Cookies from 'js-cookie' */
 import Header from '../Header'
 import JobbyCard from '../JobbyCard'
 import TypeOfEmployment from '../TypeOfEmployment'
 import SalaryRange from '../SalaryRange'
-import JobCard from '../JobCard'
-import NoJobsFound from '../NoJobsFound'
+/* import JobCard from '../JobCard' */
+/* import NoJobsFound from '../NoJobsFound' */
+import AllJobsSection from '../AllJobsSection'
 import './index.css'
 
 const employmentTypesList = [
@@ -48,6 +49,20 @@ const salaryRangesList = [
 
 class Jobs extends Component {
   state = {
+    activeType: '',
+    activeRange: '',
+  }
+
+  onCheckBox = employmentTypeId => {
+    console.log(employmentTypeId)
+    this.setState({activeType: employmentTypeId})
+  }
+
+  onRadio = activeRangeId => {
+    this.setState({activeRange: activeRangeId})
+  }
+
+  /* state = {
     jobsList: [],
     isLoading: false,
     inputValue: '',
@@ -100,7 +115,7 @@ class Jobs extends Component {
       })
     }
   }
-
+      
   renderProductsList = () => {
     const {jobsList} = this.state
     const c = jobsList.length === 0
@@ -149,10 +164,10 @@ class Jobs extends Component {
     )
     console.log(filteredList)
     this.setState({jobsList: filteredList})
-  }
+  } */
 
   render() {
-    const {isLoading} = this.state
+    const {activeRange, activeType} = this.state
     return (
       <div className="bg-container">
         <Header />
@@ -191,12 +206,11 @@ class Jobs extends Component {
           <div className="right-container">
             <div>
               <div>
-                <input type="search" onChange={this.onChangeInput} />
-                <button type="button" onClick={this.filterJobList}>
-                  search
-                </button>
+                <AllJobsSection
+                  activeRange={activeRange}
+                  activeType={activeType}
+                />
               </div>
-              {isLoading ? this.renderLoader() : this.renderProductsList()}
             </div>
           </div>
         </div>

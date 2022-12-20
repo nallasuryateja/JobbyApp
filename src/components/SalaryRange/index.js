@@ -5,7 +5,7 @@ const SalaryRange = props => {
   const {label, salaryRangeId} = eachDetails
 
   const onClickRadio = () => {
-    onRadio(salaryRangeId[0])
+    onRadio(salaryRangeId)
   }
 
   return (

@@ -9,7 +9,7 @@ import './index.css'
 class JobItemDetails extends Component {
   state = {
     dataaa: {},
-    isLoading: true,
+    apiStatus: 'INITIAL',
   }
 
   componentDidMount() {
@@ -18,7 +18,7 @@ class JobItemDetails extends Component {
 
   getProductsData = async () => {
     this.setState({
-      isLoading: true,
+      apiStatus: 'LOADING',
     })
     console.log('Loading')
     const {match} = this.props
@@ -72,14 +72,14 @@ class JobItemDetails extends Component {
         similarJobs: updatedSimilarJobs,
       }
 
-      this.setState({dataaa: updatedData, isLoading: false})
+      this.setState({dataaa: updatedData, apiStatus: 'SUCCESS'})
       console.log('loading over and updatedData set to state successfully')
-    } else {
-      this.renderFailure()
+    } else if (response.status === 401) {
+      this.setState({apiStatus: 'FAILURE'})
     }
   }
 
-  renderJobDetails = () => {
+  renderSuccess = () => {
     const {dataaa} = this.state
     console.log(dataaa)
     console.log('reached to renderjobDetails')
@@ -118,15 +118,17 @@ class JobItemDetails extends Component {
   )
 
   render() {
-    const {isLoading} = this.state
-    console.log(isLoading)
-
-    return (
-      <div className="main-bg-container">
-        {isLoading && this.renderLoader()}
-        {!isLoading && this.renderJobDetails()}
-      </div>
-    )
+    const {apiStatus} = this.state
+    switch (apiStatus) {
+      case 'LOADING':
+        return this.renderLoader()
+      case 'SUCCESS':
+        return this.renderSuccess()
+      case 'FAILURE':
+        return this.renderFailure()
+      default:
+        return null
+    }
   }
 }
 

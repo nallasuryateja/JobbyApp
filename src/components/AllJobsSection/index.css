@@ -1,0 +1,9 @@
+.jobs-list {
+  list-style-type: none;
+}
+.failure {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

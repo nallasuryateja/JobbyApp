@@ -1,8 +1,10 @@
 .job-item {
-  background-color: grey;
+  background-color: silver;
   padding: 20px;
   margin: 10px;
   border-radius: 10px;
+  outline: 2px solid white;
+  color: black;
 }
 .first-container {
   display: flex;
